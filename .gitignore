@@ -29,3 +29,23 @@ hs_err*
 .vscode
 .idea
 .reloadtrigger
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# CDS & CAP
+.gen/
+.env
