@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capm-app
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: capm-app
+  template:
+    metadata:
+      labels:
+        app: capm-app
+    spec:
+      containers:
+        - name: capm-app
+          image: lokeswarap/capm-app
+          ports:
+            - containerPort: 4004

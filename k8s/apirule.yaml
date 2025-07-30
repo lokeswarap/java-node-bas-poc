@@ -1,0 +1,19 @@
+apiVersion: gateway.kyma-project.io/v1beta1
+kind: APIRule
+metadata:
+  name: capm-app
+  namespace: test
+spec:
+  gateway: kyma-gateway.kyma-system.svc.cluster.local
+  host: capm-app
+  service:
+    name: capm-app
+    port: 80
+  rules:
+    - accessStrategies:
+        - handler: allow
+      methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
