@@ -1,0 +1,24 @@
+FROM openjdk:17-jdk-alpine
+
+WORKDIR /app
+
+COPY target/orders-service.jar ./orders-service.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "orders-service.jar"]
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install --production
+
+COPY . .
+
+EXPOSE 4004
+
+CMD ["npm", "start"]
+

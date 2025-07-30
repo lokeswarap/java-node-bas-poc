@@ -1,0 +1,14 @@
+### Create Order
+
+POST http://localhost:8080/odata/v4/OrdersService/Orders
+Content-Type: application/json
+Authorization: Basic eswar:pass_eswar:
+
+{
+  "items": [
+    {
+      "book_ID": "abed2f7a-c50e-4bc5-89fd-9a00a54b4b16",
+      "amount": 10
+    }
+  ]
+}

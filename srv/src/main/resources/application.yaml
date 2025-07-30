@@ -1,0 +1,51 @@
+---
+spring:
+  config.activate.on-profile: cloud
+cds:
+  index-page.enabled: true
+---
+spring:
+  config.activate.on-profile: default
+  sql.init.platform: h2
+cds:
+  data-source.auto-config.enabled: false
+---
+spring:
+  config.activate.on-profile: default
+  sql.init.schema-locations: classpath:schema-h2.sql
+cds:
+  datasource:
+    auto-config.enabled: false
+  security:
+    mock:
+      users:
+        - name: lokesh
+          password: pass_lokesh
+          additional:
+            firstName: Lokesh
+            lastName: Eswar
+            email: Lokesh.Esward@mail.com
+        - name: Eswar
+          password: pass_mia
+          additional:
+            firstName: Eswar
+            lastName: Lokesh
+            email: Eswar.Lokesh@mail.com
+---
+management:
+  endpoint:
+    health:
+      show-components: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  health:
+    defaults:
+      enabled: false
+    ping:
+      enabled: true
+    db:
+      enabled: true

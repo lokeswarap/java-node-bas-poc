@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=./values.schema.json
+
+global:
+  domain: abc.com
+  imagePullSecret:
+    name: docker-registry
+  image:
+    registry: cr.cf.eu10.hana.ondemand.com
+    tag: latest
+srv:
+  bindings:
+    auth:
+      serviceInstanceName: xsuaa
+    db:
+      serviceInstanceName: hana
+  image:
+    repository: bookstore-srv
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+  resources:
+    limits:
+      ephemeral-storage: 1G
+      memory: 1G
+    requests:
+      ephemeral-storage: 1G
+      cpu: 1000m
+      memory: 1G
+  health:
+    liveness:
+      path: /actuator/health/liveness
+    readiness:
+      path: /actuator/health/readiness
+  expose:
+    enabled: false
+  networkSecurity:
+    allowNamespaceInternal: true
+approuter:
+  bindings:
+    auth:
+      serviceInstanceName: xsuaa
+  image:
+    repository: bookstore-approuter
+  resources:
+    limits:
+      ephemeral-storage: 1G
+      memory: 500M
+    requests:
+      ephemeral-storage: 1G
+      cpu: 500m
+      memory: 500M
+  health:
+    liveness:
+      path: /
+    readiness:
+      path: /
+  envFrom:
+    - configMapRef:
+        name: "{{ .Release.Name }}-approuter-configmap"
+xsuaa:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+  parameters:
+    tenant-mode: dedicated
+    oauth2-configuration:
+      redirect-uris:
+        - https://*.{{ tpl .Values.global.domain . }}/**
+    xsappname: bookstore-{{ .Release.Namespace }}
+hana-deployer:
+  image:
+    repository: bookstore-hana-deployer
+  bindings:
+    hana:
+      serviceInstanceName: hana
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1G
+    requests:
+      cpu: 1000m
+      memory: 1G
+hana:
+  serviceOfferingName: hana
+  servicePlanName: hdi-shared
+backendDestinations:
+  srv-api:
+    service: srv

@@ -1,0 +1,11 @@
+{
+  "cdsc": {
+    "draftMessages": true
+  },
+  "requires": {
+    "[production]": {
+      "auth": "xsuaa",
+      "db": "hana"
+    }
+  }
+}
